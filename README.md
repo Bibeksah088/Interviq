@@ -1,6 +1,6 @@
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/brain-circuit.svg" width="80" alt="Interviq Logo"/>
+ 
   <h1>Interviq (Interview SaaS)</h1>
   <p><strong>Your AI Career Copilot & Mock Interview Environment</strong></p>
 </div>
