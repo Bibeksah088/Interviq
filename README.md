@@ -1,7 +1,7 @@
 
 <div align="center">
  
-  <h1>Interviq (Interview SaaS)</h1>
+  <h1>Interviq (GenAI interviewer )</h1>
   <p><strong>Your AI Career Copilot & Mock Interview Environment</strong></p>
 </div>
 
