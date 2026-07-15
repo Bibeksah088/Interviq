@@ -96,7 +96,6 @@ Follow these instructions to set up the project locally.
 Contributions are always welcome! Feel free to open an issue or submit a pull request if you want to add new features (like video recording or new language support).
 
 ---
-*Built with ❤️ for job seekers everywhere.*
-=======
-# Interviq
->>>>>>> 0a5f0114bd5fe9449df6def18d6fae81dabbbd06
+## Demo Video
+
+[🎥 Watch Demo](https://github.com/user-attachments/assets/9166dc1c-7f25-4639-8c53-395e3a53fda7)
