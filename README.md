@@ -98,11 +98,6 @@ Contributions are always welcome! Feel free to open an issue or submit a pull re
 ---
 ## Demo Video
 
-[![Watch the Demo](https://usersnap.com/blog/wp-content/uploads/2016/08/click-me-button-flat.png)](https://youtube.com/shorts/mLpW2bxaI-Q?si=7UG1GjnrWdyN_nqg)
+[![Watch the Demo](https://usersnap.com/blog/wp-content/uploads/2016/08/click-me-button-flat.png)](https://youtu.be/eKz9khFPUxI)
 
 
-
-
-## Demo Video
-
-[🎥 Watch Demo](https://github.com/user-attachments/assets/9166dc1c-7f25-4639-8c53-395e3a53fda7)
