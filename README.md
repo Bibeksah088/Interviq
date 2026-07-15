@@ -96,9 +96,10 @@ Follow these instructions to set up the project locally.
 Contributions are always welcome! Feel free to open an issue or submit a pull request if you want to add new features (like video recording or new language support).
 
 ---
-## Demo
+## Demo Video
 
-🎥 https://youtu.be/icgLJ3vSHyA
+[![Watch the Demo](https://usersnap.com/blog/wp-content/uploads/2016/08/click-me-button-flat.png)](https://youtube.com/shorts/mLpW2bxaI-Q?si=7UG1GjnrWdyN_nqg)
+
 
 
 
