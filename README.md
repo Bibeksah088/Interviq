@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div align="center">
   <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/brain-circuit.svg" width="80" alt="Interviq Logo"/>
   <h1>Interviq (Interview SaaS)</h1>
@@ -96,3 +97,6 @@ Contributions are always welcome! Feel free to open an issue or submit a pull re
 
 ---
 *Built with ❤️ for job seekers everywhere.*
+=======
+# Interviq
+>>>>>>> 0a5f0114bd5fe9449df6def18d6fae81dabbbd06
