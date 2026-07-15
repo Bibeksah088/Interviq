@@ -96,6 +96,12 @@ Follow these instructions to set up the project locally.
 Contributions are always welcome! Feel free to open an issue or submit a pull request if you want to add new features (like video recording or new language support).
 
 ---
+## Demo
+
+🎥 https://youtu.be/icgLJ3vSHyA
+
+
+
 ## Demo Video
 
 [🎥 Watch Demo](https://github.com/user-attachments/assets/9166dc1c-7f25-4639-8c53-395e3a53fda7)
