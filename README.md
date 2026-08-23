@@ -49,6 +49,12 @@ Follow these instructions to set up the project locally.
 3. **Start the Environment**: The AI will greet you and ask the first question. Click **"Start Voice"**, speak your answer, and click **"Compile & Submit"**.
 4. **Review Report**: Once the interview concludes (or if you hit the max questions), visit the Dashboard to review your full Post-Mortem Report.
 
+## 🚀 Live Demo
+
+🌐 **Vercel:** [Interviq Live Demo](https://interviq.vercel.app)
+
+☁️ **AWS:** [AWS Live Server](http://13.49.181.38)
+
 
 ## Demo Video
 
