@@ -33,8 +33,8 @@ Interviq is a full-stack, AI-driven platform designed to prepare candidates for 
 
 ## 📁 Project Structure
 
+```text
 Interviq/
-│
 ├── frontend/
 │   ├── public/
 │   ├── src/
@@ -57,21 +57,6 @@ Interviq/
 │
 ├── .gitignore
 └── README.md
-
-
-     AWS deployment structure
-
-  github             
-   │
-   ▼
-AWS EC2
-   │
-   ├── Nginx
-   │     └── React Frontend
-   │
-   └── Node.js + Express
-         │
-         └── MongoDB Atlas
 
 ## 🚀 Getting Started
 
