@@ -32,7 +32,7 @@ Interviq is a full-stack, AI-driven platform designed to prepare candidates for 
 - **AI Engine**: `@google/genai` (Gemini API)
 
 
- 📁 Project Structure
+ 📁 Project Structure                                                                     
 ```text
 Interviq/
 ├── frontend/
@@ -58,6 +58,31 @@ Interviq/
 ├── .gitignore
 └── README.md
 
+```
+## ☁️ Cloud Deployment
+
+```text
+                         Internet
+                            │
+                            ▼
+                    ┌───────────────┐
+                    │   AWS EC2     │
+                    │ Ubuntu Server │
+                    └───────┬───────┘
+                            │
+                         Nginx
+                       Port 80
+                            │
+              ┌─────────────┴─────────────┐
+              │                           │
+              ▼                           ▼
+       React Frontend              Node.js Backend
+       /var/www/interviq             PM2 :5000
+                                          │
+                         ┌────────────────┴───────────────┐
+                         │                                │
+                         ▼                                ▼
+                   MongoDB Atlas                     Gemini API
 ```
 
 
