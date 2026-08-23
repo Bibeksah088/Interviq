@@ -31,6 +31,48 @@ Interviq is a full-stack, AI-driven platform designed to prepare candidates for 
 - **Authentication**: JSON Web Tokens (JWT)
 - **AI Engine**: `@google/genai` (Gemini API)
 
+project structure
+Interviq/
+│
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   ├── package.json
+│   └── vite.config.js
+│
+├── backend/
+│   ├── config/
+│   ├── middleware/
+│   ├── models/
+│   ├── routes/
+│   ├── server.js
+│   ├── package.json
+│   └── package-lock.json
+│
+├── .gitignore
+└── README.md
+
+
+
+     AWS deployment structure
+
+  github             
+   │
+   ▼
+AWS EC2
+   │
+   ├── Nginx
+   │     └── React Frontend
+   │
+   └── Node.js + Express
+         │
+         └── MongoDB Atlas
+
 ## 🚀 Getting Started
 
 Follow these instructions to set up the project locally.
