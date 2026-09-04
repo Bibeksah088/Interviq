@@ -155,6 +155,8 @@ interface Config {
   jdText: string;
   resumeText: string;
   resumeFileName: string;
+  ragDocId: string;
+  ragFileName: string;
   practiceMode: boolean;
 }
 
@@ -282,7 +284,7 @@ export default function App() {
   const [interviewMode, setInterviewMode] = useState('topic');
   const [config, setConfig] = useState<Config>({
     company: 'Agnostic (General)', role: 'Software Development Engineer (SDE)', difficulty: 'Medium',
-    topic: 'Data Structures & Algorithms (DSA)', language: 'C++', jdText: '', resumeText: '', resumeFileName: '', practiceMode: false 
+    topic: 'Data Structures & Algorithms (DSA)', language: 'C++', jdText: '', resumeText: '', resumeFileName: '', ragDocId: '', ragFileName: '', practiceMode: false 
   });
 
   // Ensure topic matches role
@@ -504,6 +506,18 @@ export default function App() {
         ctx += `Job Description: "${config.jdText}". Align questions heavily with this JD. `;
       } else if (interviewMode === 'resume') {
         ctx += `Candidate's Resume: "${config.resumeText}". Probe their specific experiences deeply. `;
+      } else if (interviewMode === 'tailored') {
+        ctx += `Candidate's Resume: "${config.resumeText}". Job Description: "${config.jdText}". Ask questions that probe their resume experiences specifically checking if they meet the requirements of the job description. `;
+      }
+
+      if (config.ragDocId) {
+        try {
+           const ragQuery = isFirst ? `Core knowledge for ${config.role} and ${config.topic}` : `Candidate answered: ${ansToEvaluate}. Evaluate based on facts.`;
+           const res = await apiRequest('/rag/search', 'POST', { documentId: config.ragDocId, query: ragQuery });
+           if (res.context) {
+             ctx += `\n[Reference Knowledge Base for factual accuracy]:\n${res.context}\n(Use this to strictly evaluate the candidate's answer and generate the next question).\n`;
+           }
+        } catch (e) { console.error('RAG Search failed', e); }
       }
 
       const histStr = history.map((h, i) => `Turn ${i + 1}:\nQ: ${h.q.nextQuestion}\nA: ${h.a}`).join('\n\n');
@@ -602,6 +616,7 @@ ${isFirst ? `This is Turn 1. Introduce yourself briefly and ask the first techni
 
   // --- Resume Engine ---
   const handlePdfUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setHardwareError('');
     const file = e.target.files?.[0];
     if (!file || file.type !== 'application/pdf') return;
     setUploadStatus('reading_pdf'); setConfig(prev => ({...prev, resumeFileName: file.name}));
@@ -620,7 +635,30 @@ ${isFirst ? `This is Turn 1. Introduce yourself briefly and ask the first techni
     } catch (err) { setUploadStatus('error'); setHardwareError("Error extracting PDF text."); }
   };
 
+  const handleRagUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setHardwareError('');
+    const file = e.target.files?.[0];
+    if (!file || file.type !== 'application/pdf') return;
+    setUploadStatus('reading_pdf'); setConfig(prev => ({...prev, ragFileName: file.name}));
+    try {
+      const pdfjsLib = (window as any)['pdfjs-dist/build/pdf'];
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      const arrayBuffer = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      let fullText = '';
+      for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i); const content = await page.getTextContent();
+        fullText += content.items.map((s: any) => s.str).join(' ') + '\n';
+      }
+      
+      const res = await apiRequest('/rag/upload', 'POST', { filename: file.name, text: fullText });
+      setConfig(prev => ({...prev, ragDocId: res.documentId}));
+      setUploadStatus('idle');
+    } catch (err) { console.error(err); setUploadStatus('error'); setHardwareError("Error processing Knowledge Base for RAG."); }
+  };
+
   const analyzeResumeATS = async () => {
+    setHardwareError('');
     if (!config.resumeText.trim()) return;
     setUploadStatus('analyzing'); setIsAiLoading(true);
     try {
@@ -803,8 +841,8 @@ ${isFirst ? `This is Turn 1. Introduce yourself briefly and ask the first techni
             </div>
 
             <div className="mb-6 flex p-1 bg-slate-100 dark:bg-slate-950 rounded-xl">
-               {['topic', 'jd', 'resume'].map(mode => (
-                 <button key={mode} onClick={() => setInterviewMode(mode)} className={`flex-1 py-3 text-sm font-black rounded-lg capitalize transition-all ${interviewMode === mode ? 'bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}>{mode === 'jd' ? 'Job Description' : mode}</button>
+               {['topic', 'jd', 'resume', 'tailored'].map(mode => (
+                 <button key={mode} onClick={() => setInterviewMode(mode)} className={`flex-1 py-3 text-sm font-black rounded-lg capitalize transition-all ${interviewMode === mode ? 'bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}>{mode === 'jd' ? 'Job Description' : mode === 'tailored' ? 'Resume + JD' : mode}</button>
                ))}
             </div>
 
@@ -821,8 +859,8 @@ ${isFirst ? `This is Turn 1. Introduce yourself briefly and ask the first techni
                   )}
                 </div>
               )}
-              {interviewMode === 'jd' && <textarea value={config.jdText} onChange={e => setConfig({...config, jdText: e.target.value})} placeholder="Paste complete Job Description..." className="w-full h-40 p-4 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-xl outline-none resize-none" />}
-              {interviewMode === 'resume' && (
+              {(interviewMode === 'jd' || interviewMode === 'tailored') && <textarea value={config.jdText} onChange={e => setConfig({...config, jdText: e.target.value})} placeholder="Paste complete Job Description..." className="w-full h-40 p-4 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-xl outline-none resize-none mb-4" />}
+              {(interviewMode === 'resume' || interviewMode === 'tailored') && (
                  <div>
                    <label className="flex items-center justify-center w-full p-6 border-2 border-dashed border-indigo-200 dark:border-indigo-900/50 bg-indigo-50/50 dark:bg-indigo-900/10 text-indigo-700 dark:text-indigo-400 rounded-xl cursor-pointer font-bold mb-4 hover:bg-indigo-100 dark:hover:bg-indigo-900/30 transition-colors">
                      {uploadStatus === 'reading_pdf' ? <Loader2 className="w-6 h-6 animate-spin mr-2"/> : <FileUp className="w-6 h-6 mr-3" />}
@@ -838,6 +876,16 @@ ${isFirst ? `This is Turn 1. Introduce yourself briefly and ask the first techni
               <input type="checkbox" checked={config.practiceMode} onChange={e => setConfig({...config, practiceMode: e.target.checked})} className="w-6 h-6 text-indigo-600 rounded bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700" />
               <div><span className="block text-sm font-black text-indigo-900 dark:text-indigo-300">Practice Mode</span><span className="block text-xs font-medium text-indigo-700 dark:text-indigo-400">AI provides subtle hints when stuck.</span></div>
             </label>
+
+            <div className="mb-6">
+              <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Optional: Upload Knowledge Base (RAG)</label>
+              <label className="flex items-center justify-center w-full p-4 border-2 border-dashed border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 rounded-xl cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                {uploadStatus === 'reading_pdf' && !config.resumeFileName ? <Loader2 className="w-5 h-5 animate-spin mr-2"/> : <Database className="w-5 h-5 mr-3" />}
+                <span className="text-sm font-bold">{config.ragFileName || 'Upload Study Material/Docs (PDF)'}</span>
+                <input type="file" accept=".pdf" className="hidden" onChange={handleRagUpload} disabled={uploadStatus === 'reading_pdf'} />
+              </label>
+              {config.ragDocId && <div className="text-xs font-bold text-green-600 mt-2 flex items-center"><CheckCircle className="w-4 h-4 mr-1"/> RAG Knowledge Base Indexed!</div>}
+            </div>
 
             {hardwareError && <div className="p-4 mb-6 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 rounded-xl flex items-center text-sm font-bold border border-red-200 dark:border-red-800/50"><AlertCircle className="w-5 h-5 shrink-0 mr-2" />{hardwareError}</div>}
             
@@ -1085,7 +1133,7 @@ ${isFirst ? `This is Turn 1. Introduce yourself briefly and ask the first techni
                     </ul>
                   </div>
 
-                  <button onClick={() => { setInterviewMode('resume'); setView('setup'); }} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white p-5 rounded-2xl font-black transition-all shadow-xl shadow-indigo-500/20 mt-4 flex justify-center items-center">
+                  <button onClick={() => { setInterviewMode(config.jdText.trim() ? 'tailored' : 'resume'); setView('setup'); }} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white p-5 rounded-2xl font-black transition-all shadow-xl shadow-indigo-500/20 mt-4 flex justify-center items-center">
                     <Video className="w-5 h-5 mr-3" /> Initialize Mock Interview with this Profile
                   </button>
                 </div>

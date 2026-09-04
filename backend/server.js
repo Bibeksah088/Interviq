@@ -8,6 +8,7 @@ import authRoutes from './routes/auth.js';
 import userRoutes from './routes/users.js';
 import adminRoutes from './routes/admin.js';
 import generateRoutes from './routes/generate.js';
+import ragRoutes from './routes/rag.js';
 
 config();
 
@@ -35,6 +36,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/generate', generateRoutes);
+app.use('/api/rag', ragRoutes);
 
 // Connect to MongoDB and start server
 const PORT = process.env.PORT || 5000;
