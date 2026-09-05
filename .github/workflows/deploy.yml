@@ -19,10 +19,9 @@ jobs:
 
           cd frontend
           npm install
-          
           npm run build
+          sudo cp -r dist/. /var/www/interviq/
 
           cd ../backend
           npm install
-
           pm2 restart interviq
