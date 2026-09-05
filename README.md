@@ -16,7 +16,6 @@ Interviq is a full-stack, AI-driven platform designed to prepare candidates for 
 -  **ATS Resume Analyzer**: Instantly parses uploaded resumes against a Job Description, extracting skills, calculating an ATS match score, and suggesting missing keywords.
 -  **Gamification System**: Stay motivated with an integrated XP, Level, and Credit system. Gain XP for strong interview performances!
 - **Post-Mortem Analytics**: Receive a detailed evaluation after every interview, featuring sub-scores (Communication vs Technical) and actionable feedback.
--  **Premium UI/UX**: Built with a sleek, responsive design featuring dark/light mode persistence, sidebar navigation, and subtle micro-animations.
 
 ## 🛠️ Tech Stack
 
