@@ -19,7 +19,7 @@ jobs:
 
           cd frontend
           npm install
-          export VITE_BACKEND_URL=https://interviq-s49j.onrender.com/api
+          
           npm run build
 
           cd ../backend
