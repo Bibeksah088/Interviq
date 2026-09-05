@@ -30,14 +30,16 @@ Interviq is a full-stack, AI-driven platform designed to prepare candidates for 
 - **Runtime**: Node.js
 - **Framework**: Express.js
 - **Database**: MongoDB (Mongoose)
+- **Authentication**: JSON Web Tokens (JWT)
 - **AI Engine**: `@google/genai` (Gemini API)
 - **Vector Search / RAG**: Custom Cosine Similarity with Gemini Embeddings
-- **Authentication**: JSON Web Tokens (JWT)
 
 
  📁 Project Structure                                                                     
 ```text
 Interviq/
+├── .github/workflows/
+│   └── deploy.yml           # CI/CD Pipeline (GitHub Actions)
 ├── frontend/
 │   ├── public/
 │   └── src/
@@ -86,11 +88,14 @@ Interviq/
                    (Vector DB)     (Generation)     (RAG Chunking)
 ```
 
+### 📚 RAG Workflow
 
+```text
+PDF Upload → Text Chunking → Gemini Embedding API → Vectors stored in MongoDB
+                                                          │
+Interview Question ← Gemini API ← Top 3 Chunks ← Cosine Similarity Search
+```
 
-
-
-      
 
 ## 🚀 Getting Started
 
