@@ -30,9 +30,9 @@ Interviq is a full-stack, AI-driven platform designed to prepare candidates for 
 - **Runtime**: Node.js
 - **Framework**: Express.js
 - **Database**: MongoDB (Mongoose)
-- **Authentication**: JSON Web Tokens (JWT)
 - **AI Engine**: `@google/genai` (Gemini API)
 - **Vector Search / RAG**: Custom Cosine Similarity with Gemini Embeddings
+- **Authentication**: JSON Web Tokens (JWT)
 
 
  📁 Project Structure                                                                     
